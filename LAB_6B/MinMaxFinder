@@ -1,0 +1,5 @@
+// Define a Generic Interface
+interface MinMaxFinder<T> {
+    T findMin(T[] array);  // Method to find minimum value
+    T findMax(T[] array);  // Method to find maximum value
+}

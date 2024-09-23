@@ -1,0 +1,9 @@
+// Test with Integer Array
+public class Main {
+    public static void main(String[] args) {
+        Integer[] intArray = {3, 5, 2, 8, 1};  // Example integer array
+        MinMaxFinder<Integer> intFinder = new MinMaxFinderImpl<>();  // Create an instance
+        System.out.println("Integer Array - Min: " + intFinder.findMin(intArray));  // Find min
+        System.out.println("Integer Array - Max: " + intFinder.findMax(intArray));  // Find max
+    }
+}

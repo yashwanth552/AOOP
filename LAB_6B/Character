@@ -1,0 +1,5 @@
+// Test with Character Array
+Character[] charArray = {'a', 'e', 'i', 'o', 'u'};  // Example character array
+MinMaxFinder<Character> charFinder = new MinMaxFinderImpl<>();  // Create an instance
+System.out.println("Character Array - Min: " + charFinder.findMin(charArray));  // Find min
+System.out.println("Character Array - Max: " + charFinder.findMax(charArray));  // Find max

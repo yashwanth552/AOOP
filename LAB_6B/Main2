@@ -1,0 +1,27 @@
+public class Main {
+    public static void main(String[] args) {
+        // Test with Integer Array
+        Integer[] intArray = {3, 5, 2, 8, 1};
+        MinMaxFinder<Integer> intFinder = new MinMaxFinderImpl<>();
+        System.out.println("Integer Array - Min: " + intFinder.findMin(intArray));
+        System.out.println("Integer Array - Max: " + intFinder.findMax(intArray));
+
+        // Test with String Array
+        String[] strArray = {"apple", "banana", "cherry", "date"};
+        MinMaxFinder<String> strFinder = new MinMaxFinderImpl<>();
+        System.out.println("String Array - Min: " + strFinder.findMin(strArray));
+        System.out.println("String Array - Max: " + strFinder.findMax(strArray));
+
+        // Test with Character Array
+        Character[] charArray = {'a', 'e', 'i', 'o', 'u'};
+        MinMaxFinder<Character> charFinder = new MinMaxFinderImpl<>();
+        System.out.println("Character Array - Min: " + charFinder.findMin(charArray));
+        System.out.println("Character Array - Max: " + charFinder.findMax(charArray));
+
+        // Test with Float Array
+        Float[] floatArray = {3.4f, 1.2f, 7.8f, 0.5f, 6.1f};
+        MinMaxFinder<Float> floatFinder = new MinMaxFinderImpl<>();
+        System.out.println("Float Array - Min: " + floatFinder.findMin(floatArray));
+        System.out.println("Float Array - Max: " + floatFinder.findMax(floatArray));
+    }
+}

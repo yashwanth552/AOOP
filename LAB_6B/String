@@ -1,0 +1,5 @@
+// Test with String Array
+String[] strArray = {"apple", "banana", "cherry", "date"};  // Example string array
+MinMaxFinder<String> strFinder = new MinMaxFinderImpl<>();  // Create an instance
+System.out.println("String Array - Min: " + strFinder.findMin(strArray));  // Find min
+System.out.println("String Array - Max: " + strFinder.findMax(strArray));  // Find max

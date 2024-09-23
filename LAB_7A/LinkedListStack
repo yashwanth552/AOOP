@@ -1,0 +1,50 @@
+// Implement the Stack Interface using a Linked List
+class LinkedListStack<T> implements Stack<T> {
+    private class Node {
+        T data;
+        Node next;
+        
+        Node(T data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
+    private Node top;
+
+    public LinkedListStack() {
+        this.top = null; // Initialize an empty stack
+    }
+
+    @Override
+    public void push(T element) {
+        Node newNode = new Node(element);
+        newNode.next = top; // Link new node to the current top
+        top = newNode; // Update top
+    }
+
+    @Override
+    public T pop() {
+        if (isEmpty()) {
+            System.out.println("Stack is empty!");
+            return null;
+        }
+        T data = top.data; // Get the data from the top node
+        top = top.next; // Remove the top node
+        return data;
+    }
+
+    @Override
+    public T peek() {
+        if (isEmpty()) {
+            System.out.println("Stack is empty!");
+            return null;
+        }
+        return top.data; // Return the data of the top node
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return top == null; // Stack is empty if the top is null
+    }
+}

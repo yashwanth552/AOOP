@@ -1,0 +1,41 @@
+import java.util.Comparator;
+
+public class PriorityQueueTest {
+    public static void main(String[] args) {
+        // Test with Integers
+        PriorityQueue<Integer> intQueue = new PriorityQueue<>(Comparator.naturalOrder());
+        intQueue.add(5);
+        intQueue.add(1);
+        intQueue.add(3);
+        intQueue.add(2);
+        System.out.println("Integer Priority Queue:");
+        while (intQueue.size() > 0) {
+            System.out.print(intQueue.poll() + " "); // Should print 1 2 3 5
+        }
+        System.out.println();
+
+        // Test with Doubles
+        PriorityQueue<Double> doubleQueue = new PriorityQueue<>(Comparator.naturalOrder());
+        doubleQueue.add(4.5);
+        doubleQueue.add(2.3);
+        doubleQueue.add(8.1);
+        doubleQueue.add(0.9);
+        System.out.println("Double Priority Queue:");
+        while (doubleQueue.size() > 0) {
+            System.out.print(doubleQueue.poll() + " "); // Should print 0.9 2.3 4.5 8.1
+        }
+        System.out.println();
+
+        // Test with Strings
+        PriorityQueue<String> stringQueue = new PriorityQueue<>(Comparator.naturalOrder());
+        stringQueue.add("apple");
+        stringQueue.add("banana");
+        stringQueue.add("cherry");
+        stringQueue.add("date");
+        System.out.println("String Priority Queue:");
+        while (stringQueue.size() > 0) {
+            System.out.print(stringQueue.poll() + " "); // Should print apple banana cherry date
+        }
+        System.out.println();
+    }
+}

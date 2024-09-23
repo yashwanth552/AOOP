@@ -1,0 +1,43 @@
+public class Main {
+    public static void main(String[] args) {
+        // Test LinkedListStack with Integer
+        Stack<Integer> linkedListStack = new LinkedListStack<>();
+        System.out.println("Testing LinkedListStack with Integer:");
+        linkedListStack.push(10);
+        linkedListStack.push(20);
+        linkedListStack.push(30);
+        System.out.println("Top element: " + linkedListStack.peek());
+        System.out.println("Popped element: " + linkedListStack.pop());
+        System.out.println("Is stack empty? " + linkedListStack.isEmpty());
+
+        // Test ArrayStack with String
+        Stack<String> arrayStack = new ArrayStack<>(5);
+        System.out.println("\nTesting ArrayStack with String:");
+        arrayStack.push("apple");
+        arrayStack.push("banana");
+        arrayStack.push("cherry");
+        System.out.println("Top element: " + arrayStack.peek());
+        System.out.println("Popped element: " + arrayStack.pop());
+        System.out.println("Is stack empty? " + arrayStack.isEmpty());
+
+        // Test LinkedListStack with Character
+        Stack<Character> charStack = new LinkedListStack<>();
+        System.out.println("\nTesting LinkedListStack with Character:");
+        charStack.push('A');
+        charStack.push('B');
+        charStack.push('C');
+        System.out.println("Top element: " + charStack.peek());
+        System.out.println("Popped element: " + charStack.pop());
+        System.out.println("Is stack empty? " + charStack.isEmpty());
+
+        // Test ArrayStack with Float
+        Stack<Float> floatStack = new ArrayStack<>(3);
+        System.out.println("\nTesting ArrayStack with Float:");
+        floatStack.push(1.1f);
+        floatStack.push(2.2f);
+        floatStack.push(3.3f);
+        System.out.println("Top element: " + floatStack.peek());
+        System.out.println("Popped element: " + floatStack.pop());
+        System.out.println("Is stack empty? " + floatStack.isEmpty());
+    }
+}

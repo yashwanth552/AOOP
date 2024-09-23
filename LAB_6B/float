@@ -1,0 +1,5 @@
+// Test with Float Array
+Float[] floatArray = {3.4f, 1.2f, 7.8f, 0.5f, 6.1f};  // Example float array
+MinMaxFinder<Float> floatFinder = new MinMaxFinderImpl<>();  // Create an instance
+System.out.println("Float Array - Min: " + floatFinder.findMin(floatArray));  // Find min
+System.out.println("Float Array - Max: " + floatFinder.findMax(floatArray));  // Find max

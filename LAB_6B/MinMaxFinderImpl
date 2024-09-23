@@ -1,0 +1,14 @@
+// Implement the Generic Interface
+class MinMaxFinderImpl<T extends Comparable<T>> implements MinMaxFinder<T> {
+    @Override
+    public T findMin(T[] array) {
+        // Use Java Streams to find the minimum element
+        return Arrays.stream(array).min(Comparator.naturalOrder()).orElse(null);
+    }
+
+    @Override
+    public T findMax(T[] array) {
+        // Use Java Streams to find the maximum element
+        return Arrays.stream(array).max(Comparator.naturalOrder()).orElse(null);
+    }
+}

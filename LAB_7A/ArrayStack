@@ -1,0 +1,45 @@
+// Implement the Stack Interface using an Array
+class ArrayStack<T> implements Stack<T> {
+    private T[] array;
+    private int top;
+    private int capacity;
+
+    @SuppressWarnings("unchecked")
+    public ArrayStack(int capacity) {
+        this.capacity = capacity;
+        this.array = (T[]) new Object[capacity]; // Create a generic array
+        this.top = -1; // Initialize top as -1 to indicate an empty stack
+    }
+
+    @Override
+    public void push(T element) {
+        if (top == capacity - 1) {
+            System.out.println("Stack Overflow!");
+            return;
+        }
+        array[++top] = element; // Increment top and add the element
+    }
+
+    @Override
+    public T pop() {
+        if (isEmpty()) {
+            System.out.println("Stack is empty!");
+            return null;
+        }
+        return array[top--]; // Return the top element and decrement top
+    }
+
+    @Override
+    public T peek() {
+        if (isEmpty()) {
+            System.out.println("Stack is empty!");
+            return null;
+        }
+        return array[top]; // Return the top element without removing it
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return top == -1; // Stack is empty if top is -1
+    }
+}

@@ -1,0 +1,83 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.Scanner;
+
+public class BrowsingHistory {
+
+    public static void main(String[] args) {
+        // Using Deque interface with ArrayDeque implementation
+        Deque<String> backStack = new ArrayDeque<>();
+        Deque<String> forwardStack = new ArrayDeque<>();
+        Scanner scanner = new Scanner(System.in);
+        String currentPage = null;
+        int choice;
+
+        do {
+            System.out.println("\nBrowsing History");
+            System.out.println("1. Add a New Page");
+            System.out.println("2. Go Back to Previous Page");
+            System.out.println("3. Go Forward to Next Page");
+            System.out.println("4. Display Current Page");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    // Add a New Page
+                    System.out.print("Enter page URL: ");
+                    String newPage = scanner.nextLine();
+                    if (currentPage != null) {
+                        backStack.push(currentPage);
+                    }
+                    currentPage = newPage;
+                    forwardStack.clear(); // Clear forward history when a new page is visited
+                    System.out.println("Navigated to: " + currentPage);
+                    break;
+
+                case 2:
+                    // Go Back to Previous Page
+                    if (!backStack.isEmpty()) {
+                        forwardStack.push(currentPage);
+                        currentPage = backStack.pop();
+                        System.out.println("Went back to: " + currentPage);
+                    } else {
+                        System.out.println("No previous pages in history.");
+                    }
+                    break;
+
+                case 3:
+                    // Go Forward to Next Page
+                    if (!forwardStack.isEmpty()) {
+                        backStack.push(currentPage);
+                        currentPage = forwardStack.pop();
+                        System.out.println("Went forward to: " + currentPage);
+                    } else {
+                        System.out.println("No forward pages in history.");
+                    }
+                    break;
+
+                case 4:
+                    // Display Current Page
+                    if (currentPage != null) {
+                        System.out.println("Current page: " + currentPage);
+                    } else {
+                        System.out.println("No pages in history.");
+                    }
+                    break;
+
+                case 5:
+                    System.out.println("Exiting the Browsing History.");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+                    break;
+            }
+
+        } while (choice != 5);
+
+        scanner.close();
+    }
+}

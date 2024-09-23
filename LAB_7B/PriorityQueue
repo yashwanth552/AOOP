@@ -1,0 +1,73 @@
+import java.util.ArrayList;
+import java.util.Comparator;
+
+public class PriorityQueue<T> {
+    private ArrayList<T> heap;
+    private Comparator<? super T> comparator;
+
+    public PriorityQueue(Comparator<? super T> comparator) {
+        this.heap = new ArrayList<>();
+        this.comparator = comparator;
+    }
+
+    public void add(T item) {
+        heap.add(item);
+        siftUp(heap.size() - 1);
+    }
+
+    public T poll() {
+        if (heap.size() == 0) {
+            return null;
+        }
+        T item = heap.get(0);
+        heap.set(0, heap.get(heap.size() - 1));
+        heap.remove(heap.size() - 1);
+        siftDown(0);
+        return item;
+    }
+
+    public T peek() {
+        return heap.size() > 0 ? heap.get(0) : null;
+    }
+
+    public int size() {
+        return heap.size();
+    }
+
+    private void siftUp(int index) {
+        while (index > 0) {
+            int parentIndex = (index - 1) / 2;
+            if (comparator.compare(heap.get(index), heap.get(parentIndex)) < 0) {
+                swap(index, parentIndex);
+                index = parentIndex;
+            } else {
+                break;
+            }
+        }
+    }
+
+    private void siftDown(int index) {
+        int leftChild;
+        while ((leftChild = 2 * index + 1) < heap.size()) {
+            int rightChild = leftChild + 1;
+            int minChild = leftChild;
+
+            if (rightChild < heap.size() && comparator.compare(heap.get(rightChild), heap.get(leftChild)) < 0) {
+                minChild = rightChild;
+            }
+
+            if (comparator.compare(heap.get(minChild), heap.get(index)) < 0) {
+                swap(index, minChild);
+                index = minChild;
+            } else {
+                break;
+            }
+        }
+    }
+
+    private void swap(int index1, int index2) {
+        T temp = heap.get(index1);
+        heap.set(index1, heap.get(index2));
+        heap.set(index2, temp);
+    }
+}
