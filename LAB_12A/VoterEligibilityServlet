@@ -1,0 +1,36 @@
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+@WebServlet("/VoterEligibilityServlet")
+public class VoterEligibilityServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String name = request.getParameter("name");
+        String ageString = request.getParameter("age");
+        int age;
+
+        // Set the content type to HTML
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        // Validate age input
+        try {
+            age = Integer.parseInt(ageString);
+            if (age < 0) {
+                out.println("<h2>Error: Age cannot be negative.</h2>");
+            } else if (age >= 18) {
+                out.println("<h2>Hello " + name + ", you are eligible to vote!</h2>");
+            } else {
+                out.println("<h2>Hello " + name + ", you are not eligible to vote yet.</h2>");
+            }
+        } catch (NumberFormatException e) {
+            out.println("<h2>Error: Invalid age entered. Please enter a valid number.</h2>");
+        } finally {
+            out.close();
+        }
+    }
+}

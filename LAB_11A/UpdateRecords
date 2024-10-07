@@ -1,0 +1,32 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class UpdateRecords {
+    public static void main(String[] args) {
+        String url = "jdbc:mysql://localhost:3306/Student";
+        String user = "your_username"; // Replace with your database username
+        String password = "your_password"; // Replace with your database password
+
+        String sql = "UPDATE Registration SET program = ? WHERE id = ?";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Update program for student with id 100
+            pstmt.setString(1, "Cybersecurity");
+            pstmt.setInt(2, 100);
+            pstmt.executeUpdate();
+
+            // Update program for student with id 101
+            pstmt.setString(1, "Cloud Computing");
+            pstmt.setInt(2, 101);
+            pstmt.executeUpdate();
+
+            System.out.println("Records updated successfully...");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}

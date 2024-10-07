@@ -1,0 +1,26 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class ConnectToPostgres {
+    private static final String URL = "jdbc:postgresql://localhost:5432/test"; // URL to connect to the database
+    private static final String USERNAME = "your_username"; // Replace with your PostgreSQL username
+    private static final String PASSWORD = "your_password"; // Replace with your PostgreSQL password
+
+    public static void main(String[] args) {
+        try {
+            // Establishing the connection
+            Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            System.out.println("Connected to the database");
+            connection.close(); // Close the connection after use
+        } catch (SQLException e) {
+            // Handling SQL exceptions
+            if (e.getErrorCode() == 28000) {
+                // Error code for invalid authorization specification
+                System.out.println("Invalid username or password");
+            } else {
+                e.printStackTrace(); // Print stack trace for other SQL exceptions
+            }
+        }
+    }
+}

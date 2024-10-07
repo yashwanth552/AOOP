@@ -1,0 +1,51 @@
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+@WebServlet("/StudentDetailsServlet")
+public class StudentDetailsServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String name = request.getParameter("name");
+        String address = request.getParameter("address");
+        String program = request.getParameter("program");
+
+        String url = "jdbc:mysql://localhost:3306/Student";
+        String user = "your_username"; // Replace with your database username
+        String password = "your_password"; // Replace with your database password
+
+        String sql = "INSERT INTO Registration (name, address, program) VALUES (?, ?, ?)";
+
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, name);
+            pstmt.setString(2, address);
+            pstmt.setString(3, program);
+            pstmt.executeUpdate();
+
+            out.println("<html><body>");
+            out.println("<h1>Student Details Submitted Successfully!</h1>");
+            out.println("</body></html>");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            out.println("<html><body>");
+            out.println("<h1>Error submitting student details.</h1>");
+            out.println("</body></html>");
+        }
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Optionally handle GET requests for displaying a form or similar
+    }
+}

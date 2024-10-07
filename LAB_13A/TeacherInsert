@@ -1,0 +1,38 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class TeacherInsert {
+    // JDBC URL, username and password of MySQL server
+    private static final String URL = "jdbc:mysql://localhost:3306/school"; // Change the database name if necessary
+    private static final String USERNAME = "your_username"; // Replace with your MySQL username
+    private static final String PASSWORD = "your_password"; // Replace with your MySQL password
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Accept teacher details from user
+        System.out.print("Enter Teacher Name: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Enter Teacher Address: ");
+        String address = scanner.nextLine();
+
+        // Insert teacher details into the database
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
+            String insertQuery = "INSERT INTO Teacher (Name, Address) VALUES (?, ?)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+                preparedStatement.setString(1, name);
+                preparedStatement.setString(2, address);
+                int rowsAffected = preparedStatement.executeUpdate();
+                System.out.println(rowsAffected + " record(s) inserted successfully.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Database connection failed: " + e.getMessage());
+        } finally {
+            scanner.close();
+        }
+    }
+}

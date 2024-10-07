@@ -1,0 +1,30 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class DisplayRecords {
+    public static void main(String[] args) {
+        String url = "jdbc:mysql://localhost:3306/Student";
+        String user = "your_username"; // Replace with your database username
+        String password = "your_password"; // Replace with your database password
+
+        String sql = "SELECT * FROM Registration";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String address = rs.getString("address");
+                String program = rs.getString("program");
+                System.out.printf("ID: %d, Name: %s, Address: %s, Program: %s%n", id, name, address, program);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}

@@ -1,0 +1,31 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class InsertRecords {
+    private static final String URL = "jdbc:mysql://localhost:3306/student_management";
+    private static final String USERNAME = "your_username"; // Replace with your MySQL username
+    private static final String PASSWORD = "your_password"; // Replace with your MySQL password
+
+    public static void main(String[] args) {
+        String[] names = {"Alice", "Bob", "Charlie", "David"};
+        String[] addresses = {"123 Elm St", "456 Oak St", "789 Pine St", "101 Maple St"};
+        String[] programs = {"Computer Science", "Mathematics", "Physics", "Chemistry"};
+
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
+            String insertSQL = "INSERT INTO Registration (name, address, program) VALUES (?, ?, ?)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
+                for (int i = 0; i < names.length; i++) {
+                    preparedStatement.setString(1, names[i]);
+                    preparedStatement.setString(2, addresses[i]);
+                    preparedStatement.setString(3, programs[i]);
+                    preparedStatement.executeUpdate();
+                }
+                System.out.println("Records inserted successfully!");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}

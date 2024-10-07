@@ -1,0 +1,98 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
+// Bounded Buffer Class
+class BoundedBuffer {
+    private final Queue<String> queue = new LinkedList<>();
+    private final int capacity; // Maximum capacity of the buffer
+
+    public BoundedBuffer(int capacity) {
+        this.capacity = capacity;
+    }
+
+    // Method to add items to the buffer
+    public synchronized void produce(String item) throws InterruptedException {
+        while (queue.size() == capacity) {
+            wait(); // Wait until space is available
+        }
+        queue.add(item);
+        System.out.println("Produced: " + item);
+        notifyAll(); // Notify consumers that a new item is available
+    }
+
+    // Method to remove items from the buffer
+    public synchronized String consume() throws InterruptedException {
+        while (queue.isEmpty()) {
+            wait(); // Wait until there is an item to consume
+        }
+        String item = queue.poll();
+        notifyAll(); // Notify producers that space is available
+        System.out.println("Consumed: " + item);
+        return item;
+    }
+}
+
+// Producer Class
+class Producer implements Runnable {
+    private final BoundedBuffer buffer;
+
+    public Producer(BoundedBuffer buffer) {
+        this.buffer = buffer;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 1; i <= 20; i++) { // Produce 20 items
+            try {
+                String item = "Item " + i;
+                buffer.produce(item);
+                Thread.sleep(100); // Simulate time taken to produce an item
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+}
+
+// Consumer Class
+class Consumer implements Runnable {
+    private final BoundedBuffer buffer;
+
+    public Consumer(BoundedBuffer buffer) {
+        this.buffer = buffer;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 1; i <= 20; i++) { // Consume 20 items
+            try {
+                buffer.consume();
+                Thread.sleep(150); // Simulate time taken to consume an item
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+}
+
+// Main class to run the application
+public class BoundedBufferExample {
+    public static void main(String[] args) {
+        BoundedBuffer buffer = new BoundedBuffer(10); // Buffer capacity of 10
+
+        Thread producerThread = new Thread(new Producer(buffer));
+        Thread consumerThread = new Thread(new Consumer(buffer));
+
+        producerThread.start();
+        consumerThread.start();
+
+        try {
+            producerThread.join();
+            consumerThread.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
+        System.out.println("Bounded Buffer application finished.");
+    }
+}

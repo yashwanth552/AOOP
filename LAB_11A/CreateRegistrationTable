@@ -1,0 +1,26 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class CreateRegistrationTable {
+    public static void main(String[] args) {
+        String url = "jdbc:mysql://localhost:3306/Student";
+        String user = "your_username"; // Replace with your database username
+        String password = "your_password"; // Replace with your database password
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             Statement stmt = conn.createStatement()) {
+            
+            String sql = "CREATE TABLE Registration (" +
+                         "id INT PRIMARY KEY," +
+                         "name VARCHAR(100)," +
+                         "address VARCHAR(255)," +
+                         "program VARCHAR(100))";
+            stmt.executeUpdate(sql);
+            System.out.println("Table created successfully...");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}

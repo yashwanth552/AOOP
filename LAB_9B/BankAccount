@@ -1,0 +1,81 @@
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+class BankAccount {
+    private double balance;
+
+    public BankAccount(double initialBalance) {
+        this.balance = initialBalance;
+    }
+
+    // Synchronized method to deposit money
+    public synchronized void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.printf("Deposited: %.2f | New Balance: %.2f%n", amount, balance);
+        } else {
+            System.out.println("Deposit amount must be positive.");
+        }
+    }
+
+    // Synchronized method to withdraw money
+    public synchronized void withdraw(double amount) {
+        if (amount > 0) {
+            if (balance >= amount) {
+                balance -= amount;
+                System.out.printf("Withdrew: %.2f | New Balance: %.2f%n", amount, balance);
+            } else {
+                System.out.println("Insufficient funds for withdrawal of: " + amount);
+            }
+        } else {
+            System.out.println("Withdrawal amount must be positive.");
+        }
+    }
+
+    // Method to get the current balance (no need to synchronize as it's just reading)
+    public double getBalance() {
+        return balance;
+    }
+}
+
+class TransactionTask implements Runnable {
+    private BankAccount account;
+    private boolean isDeposit; // true if deposit, false if withdrawal
+    private double amount;
+
+    public TransactionTask(BankAccount account, boolean isDeposit, double amount) {
+        this.account = account;
+        this.isDeposit = isDeposit;
+        this.amount = amount;
+    }
+
+    @Override
+    public void run() {
+        if (isDeposit) {
+            account.deposit(amount);
+        } else {
+            account.withdraw(amount);
+        }
+    }
+}
+
+public class BankAccountManagement {
+    public static void main(String[] args) {
+        BankAccount account = new BankAccount(1000.00); // Initial balance of 1000
+
+        // Create a thread pool for concurrent transactions
+        ExecutorService executor = Executors.newFixedThreadPool(5);
+
+        // Simulating multiple users performing transactions
+        executor.execute(new TransactionTask(account, true, 200.00));   // Deposit 200
+        executor.execute(new TransactionTask(account, false, 150.00));  // Withdraw 150
+        executor.execute(new TransactionTask(account, true, 100.00));   // Deposit 100
+        executor.execute(new TransactionTask(account, false, 500.00));  // Withdraw 500
+        executor.execute(new TransactionTask(account, false, 800.00));  // Withdraw 800
+        executor.execute(new TransactionTask(account, true, 300.00));   // Deposit 300
+        executor.execute(new TransactionTask(account, false, 50.00));    // Withdraw 50
+
+        // Shutdown the executor service
+        executor.shutdown();
+    }
+}

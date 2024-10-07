@@ -1,0 +1,47 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class InsertRecords {
+    public static void main(String[] args) {
+        String url = "jdbc:mysql://localhost:3306/Student";
+        String user = "your_username"; // Replace with your database username
+        String password = "your_password"; // Replace with your database password
+
+        String sql = "INSERT INTO Registration (id, name, address, program) VALUES (?, ?, ?, ?)";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Insert four records
+            pstmt.setInt(1, 100);
+            pstmt.setString(2, "John Doe");
+            pstmt.setString(3, "123 Main St, City");
+            pstmt.setString(4, "Computer Science");
+            pstmt.executeUpdate();
+
+            pstmt.setInt(1, 101);
+            pstmt.setString(2, "Jane Smith");
+            pstmt.setString(3, "456 Elm St, City");
+            pstmt.setString(4, "Information Technology");
+            pstmt.executeUpdate();
+
+            pstmt.setInt(1, 102);
+            pstmt.setString(2, "Alice Johnson");
+            pstmt.setString(3, "789 Maple Ave, City");
+            pstmt.setString(4, "Data Science");
+            pstmt.executeUpdate();
+
+            pstmt.setInt(1, 103);
+            pstmt.setString(2, "Bob Brown");
+            pstmt.setString(3, "101 Oak St, City");
+            pstmt.setString(4, "Software Engineering");
+            pstmt.executeUpdate();
+
+            System.out.println("Records inserted successfully...");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}

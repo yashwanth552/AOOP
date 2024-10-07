@@ -1,0 +1,29 @@
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+@WebServlet("/ColorResponseServlet")
+public class ColorResponseServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Retrieve the user's favorite color from the request
+        String favoriteColor = request.getParameter("color");
+
+        // Set the content type to HTML
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        // Generate a customized response
+        out.println("<html><body>");
+        out.println("<h1>Your Favorite Color</h1>");
+        out.println("<p>Thank you for sharing! Your favorite color is: <strong>" + favoriteColor + "</strong></p>");
+        out.println("<p>We hope you enjoy all the shades of " + favoriteColor + "!</p>");
+        out.println("</body></html>");
+
+        // Close the PrintWriter
+        out.close();
+    }
+}

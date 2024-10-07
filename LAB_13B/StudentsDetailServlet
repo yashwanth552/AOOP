@@ -1,0 +1,46 @@
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+@WebServlet("/StudentDetailsServlet")
+public class StudentDetailsServlet extends HttpServlet {
+    private static final String URL = "jdbc:mysql://localhost:3306/student_management"; // Update your database name
+    private static final String USERNAME = "your_username"; // Replace with your MySQL username
+    private static final String PASSWORD = "your_password"; // Replace with your MySQL password
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String name = request.getParameter("name");
+        String address = request.getParameter("address");
+        String program = request.getParameter("program");
+
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        // Insert the student details into the database
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
+            String insertSQL = "INSERT INTO Registration (name, address, program) VALUES (?, ?, ?)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
+                preparedStatement.setString(1, name);
+                preparedStatement.setString(2, address);
+                preparedStatement.setString(3, program);
+                int rowsAffected = preparedStatement.executeUpdate();
+                out.println("<h1>Record inserted successfully!</h1>");
+                out.println("<p>Name: " + name + "</p>");
+                out.println("<p>Address: " + address + "</p>");
+                out.println("<p>Program: " + program + "</p>");
+            }
+        } catch (SQLException e) {
+            out.println("<h1>Error inserting record: " + e.getMessage() + "</h1>");
+        } finally {
+            out.close();
+        }
+    }
+}

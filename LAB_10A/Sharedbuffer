@@ -1,0 +1,98 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
+// Shared Buffer
+class SharedBuffer {
+    private final Queue<String> queue = new LinkedList<>();
+    private final int capacity; // Maximum capacity of the buffer
+
+    public SharedBuffer(int capacity) {
+        this.capacity = capacity;
+    }
+
+    // Method to add messages to the buffer
+    public synchronized void produce(String message) throws InterruptedException {
+        while (queue.size() == capacity) {
+            wait(); // Wait until space is available
+        }
+        queue.add(message);
+        System.out.println("Produced: " + message);
+        notifyAll(); // Notify consumers that a new message is available
+    }
+
+    // Method to consume messages from the buffer
+    public synchronized String consume() throws InterruptedException {
+        while (queue.isEmpty()) {
+            wait(); // Wait until there is a message to consume
+        }
+        String message = queue.poll();
+        notifyAll(); // Notify producers that space is available
+        return message;
+    }
+}
+
+// Producer Class
+class Producer implements Runnable {
+    private final SharedBuffer buffer;
+
+    public Producer(SharedBuffer buffer) {
+        this.buffer = buffer;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 1; i <= 10; i++) { // Produce 10 messages
+            try {
+                String message = "Message " + i;
+                buffer.produce(message);
+                Thread.sleep(100); // Simulate time taken to produce a message
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+}
+
+// Consumer Class
+class Consumer implements Runnable {
+    private final SharedBuffer buffer;
+
+    public Consumer(SharedBuffer buffer) {
+        this.buffer = buffer;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 1; i <= 10; i++) { // Consume 10 messages
+            try {
+                String message = buffer.consume();
+                System.out.println("Consumed: " + message);
+                Thread.sleep(150); // Simulate time taken to consume a message
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+}
+
+// Main class to run the application
+public class MessagingApplication {
+    public static void main(String[] args) {
+        SharedBuffer buffer = new SharedBuffer(5); // Buffer capacity of 5
+
+        Thread producerThread = new Thread(new Producer(buffer));
+        Thread consumerThread = new Thread(new Consumer(buffer));
+
+        producerThread.start();
+        consumerThread.start();
+
+        try {
+            producerThread.join();
+            consumerThread.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
+        System.out.println("Messaging application finished.");
+    }
+}
